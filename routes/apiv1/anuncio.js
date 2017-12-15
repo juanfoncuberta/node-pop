@@ -24,12 +24,12 @@ router.get('/',async (req,res,next)=>{
         const fields = req.query.fields;
         const maxPrice = req.query.maxPrice;
         const minPrice = req.query.minPrice;
-        
+      
         const filter ={};
         let price = {};
         if(name){   filter.name = new RegExp('^' + name, "i");; }
         if(photo){  filter.photo = photo;   }
-        if(tag){    filter.tag = ['apple','mac']}
+        if(tag){    filter.tags = {$in:tag.split(' ')}}
         if(sale){   filter.sale =sale   }
         if(maxPrice){ price['$lte']=maxPrice}
         if(minPrice){ price['$gte']=minPrice}
@@ -58,10 +58,11 @@ router.get('/',async (req,res,next)=>{
  */
 
 router.post('/',(req,res,next)=>{
-    //creamos un agente en memoria
+    //creamos un anuncio en memoria
     const anuncio = new Anuncio(req.body);
+    console.log(req.body);
    
-    //lo persistimos en la coleccion de usuarios
+    //lo persistimos en la coleccion de anuncio
     anuncio.save((err,anuncioGuardado)=>{
         if(err){
             next(err);
@@ -69,6 +70,14 @@ router.post('/',(req,res,next)=>{
         }
         res.json({success:true,result:anuncioGuardado});
     });
+
+});
+
+
+router.get('/tags',(req,res,next)=>{
+  
+    console.log('tatatataaaag');
+    res.json({success:true,result:'tag'});
 
 });
 
