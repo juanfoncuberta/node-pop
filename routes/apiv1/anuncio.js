@@ -40,7 +40,7 @@ router.get('/',async (req,res,next)=>{
         const listado = await Anuncio.list(filter);
         for(let i = 0;i<listado.length;i++){
             listado[i].photo='url/'+listado[i].photo;
-            console.log(listado[i].photo);
+           
         }
         res.json({success:true,result:listado});
 
@@ -73,15 +73,32 @@ router.post('/',(req,res,next)=>{
 
 });
 
+/**
+ * GET /anuncio/tags
+ * Devuelve lista de anuncios
+ */
 
-router.get('/tags',(req,res,next)=>{
+
+router.get('/tags',async(req,res,next)=>{
   
-    console.log('tatatataaaag');
-    res.json({success:true,result:'tag'});
+    const listado = await Anuncio.list();
+    const tags = await getItem(listado);
+    res.json({success:true,result:tags});
 
 });
 
 
-
+function getItem(list){
+    let tags=[];
+    list.forEach(item=> {
+        item.tags.forEach(tag=>{
+            console.log(tag);
+            if(!tags.includes(tag)){
+                tags.push(tag);
+            }
+        });
+    });
+    return tags;
+}
 
 module.exports = router;
