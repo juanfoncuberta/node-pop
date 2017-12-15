@@ -2,10 +2,11 @@
 
 const express = require('express');
 const router = express.Router();
-
+const jwtAuth = require('../../lib/jwtAuth');
 const Anuncio = require('../../models/Anuncios');
 
 
+router.use(jwtAuth());
 /**
  * GET /anuncio
  * Obtener lista de anuncios
@@ -59,8 +60,8 @@ router.get('/',async (req,res,next)=>{
 router.post('/',(req,res,next)=>{
     //creamos un agente en memoria
     const anuncio = new Anuncio(req.body);
-
-    //lo persistimos en la coleccion de agentes
+   
+    //lo persistimos en la coleccion de usuarios
     anuncio.save((err,anuncioGuardado)=>{
         if(err){
             next(err);
