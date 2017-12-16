@@ -5,7 +5,6 @@ const router = express.Router();
 const jwtAuth = require('../../lib/jwtAuth');
 const Anuncio = require('../../models/Anuncios');
 
-
 router.use(jwtAuth());
 /**
  * GET /anuncio
@@ -24,15 +23,33 @@ router.get('/',async (req,res,next)=>{
         const fields = req.query.fields;
         const maxPrice = req.query.maxPrice;
         const minPrice = req.query.minPrice;
+      //  const p = req.query.price.split('-');
+       // console.log('pppppp',req.query.price.split('-').length);
+
+        
       
         const filter ={};
         let price = {};
+        if(req.query.price){
+        const p = req.query.price.split('-');
+        
+        if(p.length ==1){
+            price =p[0];
+        }else{
+           
+            price['$lte']=p[1] || Number.MAX_SAFE_INTEGER;
+            
+            
+            price['$gte']=p[0] || 0;
+
+        }
+    }
         if(name){   filter.name = new RegExp('^' + name, "i");; }
         if(photo){  filter.photo = photo;   }
         if(tag){    filter.tags = {$in:tag.split(' ')}}
         if(sale){   filter.sale =sale   }
-        if(maxPrice){ price['$lte']=maxPrice}
-        if(minPrice){ price['$gte']=minPrice}
+        //if(maxPrice){ price['$lte']=maxPrice}
+        //if(minPrice){ price['$gte']=minPrice}
         if(Object.keys(price).length){filter.price = price;};
        
        console.log(filter);
