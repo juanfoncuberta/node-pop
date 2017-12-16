@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-
 var app = express();
 
 require('./lib/mongooseConnector');
@@ -26,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 app.use('/apiv1/anuncio', require('./routes/apiv1/anuncio'));
+app.use('/apiv1/usuario', require('./routes/apiv1/usuario'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -37,12 +37,28 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
+
+  if(err.array){
+    err.status = 422;
+    const infoError = err.array({onlyFirstError:true})[0];
+    err.message = isApi(req) ? 
+      {message: 'Not valid ',errores:err.mapped()}:
+      `Not valid - ${infoError.param} ${infoError.msg}`
+  }
+  res.status(err.status || 500);
+  if(isApi(req)){
+    res.json({success:false,error:err.message});
+  }
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
   res.render('error');
 });
+
+function isApi(req){
+  console.log(req.originarUrl);
+    return req.originarUrl.indexOf('/apiv')===0;
+}
 
 module.exports = app;
