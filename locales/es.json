@@ -1,0 +1,9 @@
+{
+	"email_exist": "Ya existe un usuario con este e-mail",
+	"user_not_found": "Usuario no encontrado, por favor revisa el email y la contraseña",
+	"must_be_email": "tiene que ser un email válido",
+	"not_empty": "no puede estar vacío/a",
+	"is_required": "es obligatorio/a",
+  "must_be_boolean": "tiene que ser booleano",
+  "must_be_int": "tiene que ser un entero"
+}
