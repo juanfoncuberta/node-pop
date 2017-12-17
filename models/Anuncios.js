@@ -5,15 +5,18 @@ const maxTags = 4;
 const anuncioSchema = mongoose.Schema({
     name:{
         type:String,
-        required:true
+        required:true,
+        index:true
     },
     sale:{
         type:Boolean,
         required:true,
+        index:true
     },
     price:{
         type:Number,
-        required:true
+        required:true,
+        index:true
     },
     photo:{
         type:String,
@@ -21,6 +24,7 @@ const anuncioSchema = mongoose.Schema({
     },
     tags:{
         type:[String],
+        index:true,
         enum: ['work,', 'lifestyle,', 'motor','mobile']
     }
 
