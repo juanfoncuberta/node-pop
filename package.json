@@ -5,7 +5,7 @@
   "scripts": {
     "cluster": "nodemon ./bin/cluster",
     "start": "nodemon ./bin/www",
-    "installDB": "nodemon ./lib/install_db.js"
+    "installDB": "node ./lib/install_db.js"
   },
   "dependencies": {
     "body-parser": "~1.18.2",

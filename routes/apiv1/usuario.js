@@ -13,7 +13,7 @@ const Usuario = require('../../models/Usuarios');
 
 
 router.post('/',
-[check('email').exists().withMessage('is_required').isEmail().withMessage('must_be_email'),
+[check('email').exists().withMessage('is_required').isEmail().withMessage('must_be_email').trim().normalizeEmail(),
 check('name').optional().isLength({ min: 1 }).withMessage('not_empty'),
 check('password').exists().withMessage('is_required')
 ],async(req,res,next)=>{

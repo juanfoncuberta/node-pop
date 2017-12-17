@@ -8,10 +8,22 @@ var session = require('express-session');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var app = express();
-var i18n = require("./lib/i18n");
+
+//var i18n = require("./lib/i18n");
+const i18n = require("i18n");
+
+
 
 
 require('./lib/mongooseConnector');
+i18n.configure({
+  locales: ["en", "es"],
+  directory: path.join(__dirname, "./locales"),
+ defaultLocale: "en",
+ // register: global
+});
+app.use(i18n.init);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -23,7 +35,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(i18n.init);
+
+app.use(module.exports = function(err, req, res, next) {
+ 
+ // console.log(req.get('Accept-Language'));
+  next();
+});
+//app.use(i18n.init);
 //app.use(i18n);
 app.use('/', index);
 app.use('/users', users);
@@ -53,7 +71,6 @@ app.use(function(err, req, res, next) {
     res.json({success:false,error:err.message});
     return;
   }
-  console.log('gola');
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 

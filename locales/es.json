@@ -4,6 +4,6 @@
 	"must_be_email": "tiene que ser un email válido",
 	"not_empty": "no puede estar vacío/a",
 	"is_required": "es obligatorio/a",
-  "must_be_boolean": "tiene que ser booleano",
-  "must_be_int": "tiene que ser un entero"
+	"must_be_boolean": "tiene que ser booleano",
+	"must_be_int": "tiene que ser un entero"
 }
