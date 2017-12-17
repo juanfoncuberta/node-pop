@@ -29,14 +29,9 @@ var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 if(cluster.isMaster){
   const numCPUs = require('os').cpus().length;
-  cluster.on('listening',(worker,address)=>{
-    console.log(`Worker ${worker.id} con PID ${worker.process.pid} conectado a puerto ${address.port}`);
-  });
+  cluster.on('listening',(worker,address)=>{});
   cluster.on('exit',(worker,code,signal)=>{
-    console.log(`Worker ${worker.process.pid} muerdo con codigo ${code} y señal ${signal}`);
-
-    console.log('Arrancando nuevo worker');
-    cluster.fork();
+  cluster.fork();
   });
 
 
