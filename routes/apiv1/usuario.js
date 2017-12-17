@@ -11,29 +11,28 @@ const {matchedData,santize} = require('express-validator/filter');
 
 const Usuario = require('../../models/Usuarios');
 
+
 router.post('/',
-[check('email').exists().withMessage(i18n.__('is_required')).isEmail().withMessage(i18n.__('must_be_email')),
-check('name').optional().isLength({ min: 1 }).withMessage(i18n.__('not_empty')),
-check('password').exists().withMessage(i18n.__('is_required'))
+[check('email').exists().withMessage('is_required').isEmail().withMessage('must_be_email'),
+check('name').optional().isLength({ min: 1 }).withMessage('not_empty'),
+check('password').exists().withMessage('is_required')
 ],async(req,res,next)=>{
-    //creamos un usuario en memoria
-    //req.checkBody("email", "Enter a valid email address.").isEmail();
+
     const errors = validationResult(req);
    if (!errors.isEmpty()) {
-      return res.status(422).json({success:false, error: `${errors.array()[0].param} - ${errors.array()[0].msg}`});
+       const msg = errors.array()[0].msg;;
+      return res.status(422).json({success:false, error: `${errors.array()[0].param} - ${req.__(msg)}`});
     }
  
+
 let token = '';  
     try{
-    
-      if(req.get('Accept-Language'))
-            i18n.setLocale(req.get('Accept-Language'));
-   
-        req.body.password = crypto.createHash('md5').update(req.body.password).digest('hex');
+
+         req.body.password = crypto.createHash('md5').update(req.body.password).digest('hex');
         if(req.body.name){
             const checkUser =await Usuario.listOne({email:req.body.email});
             if(checkUser){
-                res.json({success:false,error:i18n.__('email_exist')});
+                res.json({success:false,error:req.__('email_exist')});
                 return;
 
             }
@@ -48,11 +47,11 @@ let token = '';
                 token = await makeToken(nuevoUsuario,next);
                 res.json({success:true,token:token});             
             });
-        }else{            
+        }else{           
             const logUser = await Usuario.listOne(req.body);
             
             if(!logUser){
-                res.json({success:false,error:i18n.__('user_not_found')});
+                res.json({success:false,error:req.__('user_not_found')});
                 return;
             }
             token = await makeToken(logUser,next);
@@ -100,7 +99,7 @@ function makeToken(usuario,next){
             }
             resolve(token);
             
-        // res.json({success:true,token:token})
+
             
             
     });

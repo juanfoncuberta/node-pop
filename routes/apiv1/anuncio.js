@@ -8,7 +8,7 @@ const {check,validationResult} = require('express-validator/check');
 const {matchedData,santize} = require('express-validator/filter');
 
 router.use(jwtAuth());
-router.use(i18n.init);
+
 
 /**
  * GET /anuncio
@@ -30,23 +30,18 @@ router.get('/',[check('sale').optional().isBoolean().withMessage(i18n.__('must_b
         const tag = req.query.tag;
         const limit = parseInt(req.query.limit);
         const skip = parseInt(req.query.skip);
-        const sort = req.query.sort;
-      
-      //  const p = req.query.price.split('-');
-       // console.log('pppppp',req.query.price.split('-').length);
 
-        
       
         const filter ={};
         let price = {};
         if(req.query.price){
-            const p = req.query.price.split('-');
+            const priceArray = req.query.price.split('-');
             
-            if(p.length ==1){
-                price =p[0];
+            if(priceArray.length ==1){
+                price =priceArray[0];
             }else{       
-                price['$lte']=p[1] || Number.MAX_SAFE_INTEGER;
-                price['$gte']=p[0] || 0;
+                price['$lte']=priceArray[1] || Number.MAX_SAFE_INTEGER;
+                price['$gte']=priceArray[0] || 0;
 
             }
         }
@@ -57,9 +52,9 @@ router.get('/',[check('sale').optional().isBoolean().withMessage(i18n.__('must_b
        
     
         
-        const listado = await Anuncio.list(filter);
+        const listado = await Anuncio.list(filter,limit,skip);
         for(let i = 0;i<listado.length;i++){
-            listado[i].photo='url/'+listado[i].photo;
+            listado[i].photo=req.get('host')+'/'+listado[i].photo;
            
         }
         res.json({success:true,result:listado});
@@ -80,7 +75,7 @@ router.get('/',[check('sale').optional().isBoolean().withMessage(i18n.__('must_b
 router.post('/',(req,res,next)=>{
     //creamos un anuncio en memoria
     const anuncio = new Anuncio(req.body);
-    console.log(req.body);
+
    
     //lo persistimos en la coleccion de anuncio
     anuncio.save((err,anuncioGuardado)=>{
@@ -112,7 +107,6 @@ function getItem(list){
     let tags=[];
     list.forEach(item=> {
         item.tags.forEach(tag=>{
-            console.log(tag);
             if(!tags.includes(tag)){
                 tags.push(tag);
             }
