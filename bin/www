@@ -4,20 +4,33 @@
  * Module dependencies.
  */
 require('dotenv').config();
+var i18n = require("../lib/i18n");
 var app = require('../app');
 var debug = require('debug')('nodepop:server');
 var http = require('http');
+var assert = require('assert');
+
+var session = require('express-session');
+
+
+
+
+
+
+
+
+
 
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
+
 
 var server = http.createServer(app);
 
