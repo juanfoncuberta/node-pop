@@ -5,8 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var index = require('./routes/index');
-var users = require('./routes/users');
+//var index = require('./routes/index');
+//var users = require('./routes/users');
 var app = express();
 
 const i18n = require("i18n");
@@ -37,8 +37,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 
-app.use('/', index);
-app.use('/users', users);
+//app.use('/', index);
+//app.use('/users', users);
 app.use('/apiv1/anuncio', require('./routes/apiv1/anuncio'));
 app.use('/apiv1/usuario', require('./routes/apiv1/usuario'));
 
