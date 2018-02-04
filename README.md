@@ -206,3 +206,4 @@ El control de errores esta desarrollado en multidioma gracias al módulo *i18n*.
   
   [Acceso a la app de nodepop mediante subdominio](http://api.juanfoncuberta.com)
   
+  [Acceso al elemento estático de la app para comprobar que es cargado por nginx](http://api.juanfoncuberta.com/images/anuncios/bici.jpg)
