@@ -196,14 +196,13 @@ El control de errores esta desarrollado en multidioma gracias al módulo *i18n*.
 
 
 
+ ## Práctica devOps
+ 
+ A continuación se presentan los diferentes enlaces para la evaluación de la práctica:
+ 
+ [Acceso a la web estática mediante dominio](http://juanfoncuberta.com)
+ 
+  [Acceso a la web estática mediante ip](http://18.217.128.196)
   
-	
-	
-	
-	 
-		
-	
-	
-	
-	
-	
+	[Acceso a la app de nodepop mediante subdominio](http://api.juanfoncuberta.com)
+  
